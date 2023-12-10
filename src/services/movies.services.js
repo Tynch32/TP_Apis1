@@ -18,10 +18,12 @@ const seEncuentraLaPelicula = async (title) =>{
     
 }
 
-const getAllMovies= async() =>{
+const getAllMovies= async(limit,offset) =>{
     
     try{
         const movies = await db.Movie.findAll({
+            limit,
+            offset,
             attributes: {
                 exclude: ['created_at','updated_at','genre_id']
             },include: [{
@@ -40,10 +42,12 @@ const getAllMovies= async() =>{
         if(!movies){
             throw {
                 status: 404,
-                message: 'No hay una películas'
+                message: 'No hay películas'
             }
         }
-        return movies
+        const count = await db.Movie.count();
+
+        return {movies, count}
 
     }catch (error){
         console.log(error);

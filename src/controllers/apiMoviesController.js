@@ -1,12 +1,20 @@
 const { getAllMovies, getMovieById, storeMovie, seEncuentraLaPelicula, updateMovie, deleteMovie } = require("../services/movies.services");
 const createError = require('http-errors');
-
+const paginate = require("express-paginate")
 module.exports = {
     index: async (req, res) => {
         try{
-            const movies = await getAllMovies();
+            const {count, movies} = await getAllMovies(req.query.limit,req.skip);
+            const pagesCount = Math.ceil(count/ req.query.limit);
+            const currentPage = req.query.page;
+            const pages = paginate.getArrayPages(req)(pagesCount,pagesCount,currentPage);
             return res.status(200).json({
                 ok:true,
+                meta : {
+                    pagesCount,
+                    currentPage,
+                    pages
+                },
                 data:movies
             })
         }catch(error){
