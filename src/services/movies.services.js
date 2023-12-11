@@ -2,20 +2,21 @@ const { Op } = require('sequelize');
 const db = require ('../database/models');
 
 const seEncuentraLaPelicula = async (title) =>{
-    try {
-        const movie = await db.Movie.findAll({attributes: ['title']});
-        if(movie){
-            return true;
-        }else{
-            return false;
-        }
-    }catch (error){
-        console.log(error);
-        throw {
-            status: error.status || 500,
-            message: error.message || 'Error en el servicio'
-        }
-    }
+        const movie = await db.Movie.findOne({
+            where: {
+              titulo: title,
+            },
+          })
+            .then((peliculaEncontrada) => {
+              if (peliculaEncontrada) {
+                true
+              } else {
+                false
+              }
+            })
+            .catch((error) => {
+              console.error('Error al buscar la película:', error);
+            });
     
 }
 
