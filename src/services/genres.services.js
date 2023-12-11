@@ -6,7 +6,8 @@ const getAllGenres= async() =>{
         const genres = await db.Genre.findAll({
             attributes: {
                 exclude: ['created_at','updated_at']
-            }
+            },
+            order:[['name','ASC']]
         });
         return genres
 

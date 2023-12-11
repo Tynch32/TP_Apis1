@@ -3,9 +3,9 @@ const { getAllGenres, getGenreById } = require("../services/genres.services");
 module.exports = {
     index: async (req, res) => {
         try{
-            const Genre = await getAllGenres();
+            const Genres = await getAllGenres();
             
-            if(!Genre){
+            if(!Genres){
                 throw {
                     status: 404,
                     message: 'No hay generos'
@@ -14,7 +14,10 @@ module.exports = {
 
             return res.status(200).json({
                 ok:true,
-                data:Genre
+                meta:{
+                    total: Genres.length
+                },
+                data:Genres
             })
             
 
