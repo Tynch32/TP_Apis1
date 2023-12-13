@@ -40,7 +40,7 @@ module.exports = {
             return res.status(error.status || 500).json({
                 ok:false,
                 status: error.status || 500,
-                error: error.message || 'Error al indexar movies'
+                error: error.message || 'Error en el servicio'
             })
         }
     },
